@@ -35,16 +35,20 @@ class Recommendation {
   TimeOfDay _sunTill;
   TimeOfDay _holidayTill;
 
-  Recommendation(this._category, this._insertedAt, this._rating, this._title,
+  Recommendation(
+      this._category,
+      this._insertedAt,
+      this._rating,
+      this._title,
       this._updatedAt,
-      [this._address,
+     [this._longitude,
+      this._latitude,
+      this._address,
       this._audioComment,
       this._comment,
       this._imageOne,
       this._imageTwo,
       this._imageThree,
-      this._latitude,
-      this._longitude,
       this._notifyMe,
       this._phone,
       this._website,

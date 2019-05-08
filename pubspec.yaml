@@ -12,6 +12,7 @@ dependencies:
   sqflite: any
   path_provider: any
   intl: ^0.15.8
+  location: any
 
   # scoped_model: ^1.0.0
   cupertino_icons: ^0.1.2

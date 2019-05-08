@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:recomendo/models/recommendation.dart';
 import 'package:recomendo/utils/database_helper.dart';
+import 'package:recomendo/utils/geolocation_helper.dart';
 import 'package:recomendo/screens/recommendation_detail.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
@@ -33,14 +34,16 @@ class RecommendationListState extends State<RecommendationList> {
       body: recommendationListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          debugPrint('FAB pressed');
+          GeolocationHelper geohelper = GeolocationHelper();
           navigateToDetail(
               Recommendation(
                   1,              // category
                   DateTime.now(), // insertedAT
                   1,              // rating
                   '',             // title
-                  DateTime.now()  // updatedAT
+                  DateTime.now(),  // updatedAT
+                  geohelper.longitude,
+                  geohelper.latitude
               ),
               'Add Recommendation'
           );
