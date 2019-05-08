@@ -1,11 +1,9 @@
 import 'package:location/location.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
 
 class GeolocationHelper {
 
   static GeolocationHelper _geolocationHelper;
-  static LocationData _location;
+  static Future<LocationData> _location;
 
   GeolocationHelper._createInstance();
 
@@ -14,16 +12,13 @@ class GeolocationHelper {
     return _geolocationHelper;
   }
 
-  LocationData get location => (_location == null) ? cacheLocation() : _location;
-  double get longitude => location.longitude;
-  double get latitude => location.latitude;
+  Future<LocationData> get location {
+    _location ??= cacheLocation();
+    return _location;
+  }
 
-  LocationData cacheLocation() {
-    Location().getLocation().then((location) {
-      _location = location;
-      debugPrint(_location.longitude.toString());
-      debugPrint(_location.latitude.toString());
-      return _location;
-    });
+  Future<LocationData> cacheLocation() async {
+    LocationData currentLocation = await Location().getLocation();
+    return currentLocation;
   }
 }

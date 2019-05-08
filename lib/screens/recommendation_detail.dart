@@ -62,6 +62,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
             right: 10.0),
           child: ListView(
             children: <Widget>[
+              // Category drop down
               ListTile(
                 title: DropdownButton(
                     items: _categories.map((String dropDownStringItem) {
@@ -81,6 +82,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 ),
               ),
 
+              // Title form field
               Padding(
                 padding: EdgeInsets.only(
                   top: 15.0,
@@ -100,6 +102,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 ),
               ),
 
+              // Comment form field
               Padding(
                 padding: EdgeInsets.only(
                     top: 15.0,
@@ -119,6 +122,10 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 ),
               ),
 
+              Text(recommendation.latitude.toString()),
+              Text(recommendation.longitude.toString()),
+
+              // Save and Delete
               Padding(
                 padding: EdgeInsets.only(
                     top: 15.0,

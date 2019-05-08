@@ -6,6 +6,7 @@ import 'package:recomendo/utils/geolocation_helper.dart';
 import 'package:recomendo/screens/recommendation_detail.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 
 class RecommendationList extends StatefulWidget {
   @override
@@ -34,16 +35,13 @@ class RecommendationListState extends State<RecommendationList> {
       body: recommendationListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GeolocationHelper geohelper = GeolocationHelper();
           navigateToDetail(
               Recommendation(
                   1,              // category
                   DateTime.now(), // insertedAT
                   1,              // rating
                   '',             // title
-                  DateTime.now(),  // updatedAT
-                  geohelper.longitude,
-                  geohelper.latitude
+                  DateTime.now()  // updatedAT
               ),
               'Add Recommendation'
           );
@@ -134,13 +132,13 @@ class RecommendationListState extends State<RecommendationList> {
   }
 
   void navigateToDetail(Recommendation recommendation, String title) async {
+    await setCoordinates(recommendation);
+
     bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return RecommendationDetail(recommendation, title);
     }));
 
-    if (result == true) {
-      updateListView();
-    }
+    if (result == true) { updateListView(); }
   }
 
   void updateListView() {
@@ -159,5 +157,13 @@ class RecommendationListState extends State<RecommendationList> {
   Text getDateText(value) {
     String dateString = DateFormat.yMMMd().format(value);
     return Text(dateString);
+  }
+
+  bool setCoordinates(recommendation) {
+    final Future<LocationData> locationFuture = GeolocationHelper().location;
+    locationFuture.then((location) {
+      recommendation.longitude = location.longitude;
+      recommendation.latitude = location.latitude;
+    });
   }
 }
