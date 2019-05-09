@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 
 class Recommendation {
   int _id;
-  String _address;
-  String _audioComment;
+  String _address;          // todo
+  String _audioComment;     // todo
   String _title;
   int _category;
   String _comment;
-  String _imageOne;
-  String _imageTwo;
-  String _imageThree;
+  String _imageOne;         // todo
+  String _imageTwo;         // todo
+  String _imageThree;       // todo
   DateTime _insertedAt;
-  double _latitude;
-  double _longitude;
-  bool _notifyMe;
-  String _phone;
-  int _rating;
+  double _latitude;         // todo move logic
+  double _longitude;        // todo move logic
+  bool _notifyMe;           // todo
+  String _phone;            // todo
+  int _rating;              // todo
   DateTime _updatedAt;
-  Uri _website;
+  Uri _website;             // todo
   TimeOfDay _moFrom;
   TimeOfDay _tueFrom;
   TimeOfDay _wedFrom;
@@ -298,7 +298,7 @@ class Recommendation {
     if (value == 'null') {
       return 0;
     } else {
-      int hour = int.parse(value.substring(0, 1));
+      int hour = int.parse(value.substring(10, 12));
       return hour;
     }
   }
@@ -307,7 +307,7 @@ class Recommendation {
     if (value == 'null') {
       return 0;
     } else {
-      int hour = int.parse(value.substring(2, 3));
+      int hour = int.parse(value.substring(13, 15));
       return hour;
     }
   }
