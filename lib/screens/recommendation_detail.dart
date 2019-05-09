@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recomendo/models/recommendation.dart';
 import 'package:recomendo/utils/database_helper.dart';
-import 'package:intl/intl.dart';
-import 'package:recomendo/utils/start_rating.dart';
+import 'package:recomendo/utils/star_rating.dart';
 import 'package:recomendo/utils/time_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
