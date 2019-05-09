@@ -13,7 +13,7 @@ class Recommendation {
   DateTime _insertedAt;
   double _latitude;         // todo move logic
   double _longitude;        // todo move logic
-  bool _notifyMe;           // todo
+  bool _notifyMe;
   String _phone;
   int _rating;              // todo
   DateTime _updatedAt;

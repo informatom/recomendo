@@ -112,6 +112,19 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                           child: Text(
                               "Latitude: ${recommendation.longitude.toString()}")),
                     ])),
+
+                // Notify me
+                CheckboxListTile(
+                  title: Text('Notify me'),
+                  value: recommendation.notifyMe,
+                  onChanged: (bool value) {
+                    setState(() {
+                      recommendation.notifyMe = value;
+                    });
+                  },
+                  secondary: Icon(Icons.notifications),
+                ),
+
                 Divider(),
 
                 // Opening hours
