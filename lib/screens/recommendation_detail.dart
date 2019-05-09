@@ -76,12 +76,28 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 // Comment form field
                 TextField(
                     onChanged: (value) => recommendation.comment = value,
-                    decoration: InputDecoration(labelText: 'Comment')),
+                    decoration: InputDecoration(labelText: 'Comment')
+                ),
 
                 // Address form field
                 TextField(
                     onChanged: (value) => recommendation.address = value,
-                    decoration: InputDecoration(labelText: 'Address')),
+                    decoration: InputDecoration(labelText: 'Address')
+                ),
+
+                // Website form field
+                TextField(
+                  onChanged: (value) => recommendation.website = Uri.parse(value),
+                  decoration: InputDecoration(labelText: 'Website'),
+                  keyboardType: TextInputType.url,
+                ),
+
+                // Phone form field
+                TextField(
+                    onChanged: (value) => recommendation.phone = value,
+                    decoration: InputDecoration(labelText: 'Phone'),
+                    keyboardType: TextInputType.phone,
+                ),
                 Divider(),
 
                 // Location

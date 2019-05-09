@@ -14,10 +14,10 @@ class Recommendation {
   double _latitude;         // todo move logic
   double _longitude;        // todo move logic
   bool _notifyMe;           // todo
-  String _phone;            // todo
+  String _phone;
   int _rating;              // todo
   DateTime _updatedAt;
-  Uri _website;             // todo
+  Uri _website;
   TimeOfDay _moFrom;
   TimeOfDay _tueFrom;
   TimeOfDay _wedFrom;
