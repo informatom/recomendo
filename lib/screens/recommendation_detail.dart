@@ -3,6 +3,7 @@ import 'package:recomendo/models/recommendation.dart';
 import 'package:recomendo/utils/database_helper.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:recomendo/utils/start_rating.dart';
 
 class RecommendationDetail extends StatefulWidget {
   final String appBarTitle;
@@ -112,6 +113,19 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                           child: Text(
                               "Latitude: ${recommendation.longitude.toString()}")),
                     ])),
+
+                // Rating
+                Center(child: Text("Rating", style: textStyle)),
+                Center(
+                  child: StarRating(
+                    value: recommendation.rating,
+                    onChanged: (selectedValue) {
+                      setState(() {
+                        recommendation.rating = selectedValue;
+                      });
+                    },
+                  ),
+                ),
 
                 // Notify me
                 CheckboxListTile(

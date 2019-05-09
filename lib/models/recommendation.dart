@@ -15,7 +15,7 @@ class Recommendation {
   double _longitude;        // todo move logic
   bool _notifyMe;
   String _phone;
-  int _rating;              // todo
+  int _rating;
   DateTime _updatedAt;
   Uri _website;
   TimeOfDay _moFrom;
