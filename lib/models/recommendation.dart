@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Recommendation {
   int _id;
-  String _address;          // todo
+  String _address;
   String _audioComment;     // todo
   String _title;
   int _category;
