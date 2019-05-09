@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:recomendo/models/recommendation.dart';
 import 'package:recomendo/utils/database_helper.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:recomendo/utils/start_rating.dart';
+import 'package:recomendo/utils/time_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:async';
 
 class RecommendationDetail extends StatefulWidget {
   final String appBarTitle;
@@ -70,34 +73,62 @@ class RecommendationDetailState extends State<RecommendationDetail> {
 
                 // Title form field
                 TextField(
-                  onChanged: (value) => recommendation.title = value,
-                  decoration: InputDecoration(labelText: 'Title')
-                ),
+                    onChanged: (value) => recommendation.title = value,
+                    decoration: InputDecoration(
+                      labelText: 'Title',
+                      border: OutlineInputBorder(),
+                    )),
+
+                Divider(),
+
+                // Images: Image 1
+                Center(child: Text("Images", style: textStyle)),
+                Row(children: <Widget>[
+                  Expanded(child: getImageWidget(recommendation.imageOne)),
+                  Expanded(
+                      child: RaisedButton(
+                          onPressed: getImage, child: Text("Pick Photo 1")))
+                ]),
+
+                // Image 2
+                Row(children: <Widget>[
+                  Expanded(child: getImageWidget(recommendation.imageTwo)),
+                  Expanded(
+                      child: RaisedButton(
+                          onPressed: getImage, child: Text("Pick Photo 2")))
+                ]),
+
+                // Image 3
+                Row(children: <Widget>[
+                  Expanded(child: getImageWidget(recommendation.imageThree)),
+                  Expanded(
+                      child: RaisedButton(
+                          onPressed: getImage, child: Text("Pick Photo 3")))
+                ]),
 
                 // Comment form field
                 TextField(
                     onChanged: (value) => recommendation.comment = value,
-                    decoration: InputDecoration(labelText: 'Comment')
-                ),
+                    decoration: InputDecoration(labelText: 'Comment')),
 
                 // Address form field
                 TextField(
                     onChanged: (value) => recommendation.address = value,
-                    decoration: InputDecoration(labelText: 'Address')
-                ),
+                    decoration: InputDecoration(labelText: 'Address')),
 
                 // Website form field
                 TextField(
-                  onChanged: (value) => recommendation.website = Uri.parse(value),
+                  onChanged: (value) =>
+                      recommendation.website = Uri.parse(value),
                   decoration: InputDecoration(labelText: 'Website'),
                   keyboardType: TextInputType.url,
                 ),
 
                 // Phone form field
                 TextField(
-                    onChanged: (value) => recommendation.phone = value,
-                    decoration: InputDecoration(labelText: 'Phone'),
-                    keyboardType: TextInputType.phone,
+                  onChanged: (value) => recommendation.phone = value,
+                  decoration: InputDecoration(labelText: 'Phone'),
+                  keyboardType: TextInputType.phone,
                 ),
                 Divider(),
 
@@ -130,7 +161,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 // Notify me
                 CheckboxListTile(
                   title: Text('Notify me'),
-                  value: recommendation.notifyMe,
+                  value: (recommendation.notifyMe == true) ? true : false,
                   onChanged: (bool value) {
                     setState(() {
                       recommendation.notifyMe = value;
@@ -144,460 +175,52 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 // Opening hours
                 Center(child: Text("Opening hours", style: textStyle)),
                 // Monday opening hours
-                Row(
-                  children: <Widget>[
-                    // moFrom
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.moFrom.hour,
-                            recommendation.moFrom.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.moFrom.hour,
-                            minute: recommendation.moFrom.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Monday from',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.moFrom = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-
-                    // moTill
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.moTill.hour,
-                            recommendation.moTill.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.moTill.hour,
-                            minute: recommendation.moTill.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Monday until',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.moTill = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                Row(children: <Widget>[
+                  getTimePicker(recommendation.moFrom),
+                  getTimePicker(recommendation.moTill),
+                ]),
 
                 // Tuesday opening hours
-                Row(
-                  children: <Widget>[
-                    // tueFrom
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.tueFrom.hour,
-                            recommendation.tueFrom.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.tueFrom.hour,
-                            minute: recommendation.tueFrom.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Tuesday from',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.tueFrom = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-
-                    // tueTill
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.tueTill.hour,
-                            recommendation.tueTill.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.tueTill.hour,
-                            minute: recommendation.tueTill.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Tuesday until',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.tueTill = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                Row(children: <Widget>[
+                  getTimePicker(recommendation.tueFrom),
+                  getTimePicker(recommendation.tueTill),
+                ]),
 
                 // Wednesday opening hours
-                Row(
-                  children: <Widget>[
-                    // wedFrom
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.wedFrom.hour,
-                            recommendation.wedFrom.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.wedFrom.hour,
-                            minute: recommendation.wedFrom.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Wednesday from',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.wedFrom = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-
-                    // wedTill
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.wedTill.hour,
-                            recommendation.wedTill.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.wedTill.hour,
-                            minute: recommendation.wedTill.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Wednesday until',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.wedTill = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                Row(children: <Widget>[
+                  getTimePicker(recommendation.wedFrom),
+                  getTimePicker(recommendation.wedTill),
+                ]),
 
                 // Thursday opening hours
-                Row(
-                  children: <Widget>[
-                    // thurFrom
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.thurFrom.hour,
-                            recommendation.thurFrom.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.thurFrom.hour,
-                            minute: recommendation.thurFrom.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Thursday from',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.thurFrom = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-
-                    // thurTill
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.thurTill.hour,
-                            recommendation.thurTill.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.thurTill.hour,
-                            minute: recommendation.thurTill.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Thursday until',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.thurTill = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                Row(children: <Widget>[
+                  getTimePicker(recommendation.thurFrom),
+                  getTimePicker(recommendation.thurTill),
+                ]),
 
                 // Friday opening hours
-                Row(
-                  children: <Widget>[
-                    // friFrom
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.friFrom.hour,
-                            recommendation.friFrom.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.friFrom.hour,
-                            minute: recommendation.friFrom.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Friday from',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.friFrom = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-
-                    // friTill
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.friTill.hour,
-                            recommendation.friTill.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.friTill.hour,
-                            minute: recommendation.friTill.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Friday until',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.friTill = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                Row(children: <Widget>[
+                  getTimePicker(recommendation.friFrom),
+                  getTimePicker(recommendation.friTill),
+                ]),
 
                 // Saturday opening hours
-                Row(
-                  children: <Widget>[
-                    // satFrom
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.satFrom.hour,
-                            recommendation.satFrom.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.satFrom.hour,
-                            minute: recommendation.satFrom.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Saturday from',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.satFrom = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-
-                    // satTill
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.satTill.hour,
-                            recommendation.satTill.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.satTill.hour,
-                            minute: recommendation.satTill.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Saturday until',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.satTill = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                Row(children: <Widget>[
+                  getTimePicker(recommendation.satFrom),
+                  getTimePicker(recommendation.satTill),
+                ]),
 
                 // Sunday opening hours
-                Row(
-                  children: <Widget>[
-                    // sunFrom
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.sunFrom.hour,
-                            recommendation.sunFrom.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.sunFrom.hour,
-                            minute: recommendation.sunFrom.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Sunday from',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.sunFrom = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-
-                    // sunTill
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.sunTill.hour,
-                            recommendation.sunTill.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.sunTill.hour,
-                            minute: recommendation.sunTill.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Sunday until',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.sunTill = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                Row(children: <Widget>[
+                  getTimePicker(recommendation.sunFrom),
+                  getTimePicker(recommendation.sunTill),
+                ]),
 
                 // Holiday opening hours
-                Row(
-                  children: <Widget>[
-                    // holidayFrom
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.holidayFrom.hour,
-                            recommendation.holidayFrom.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.holidayFrom.hour,
-                            minute: recommendation.holidayFrom.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Holiday from',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.holidayFrom = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-
-                    // holidayTill
-                    Expanded(
-                      child: DateTimePickerFormField(
-                        inputType: InputType.time,
-                        format: DateFormat("HH:mm"),
-                        initialValue: DateTime(
-                            0,
-                            0,
-                            0,
-                            recommendation.holidayTill.hour,
-                            recommendation.holidayTill.minute),
-                        initialTime: TimeOfDay(
-                            hour: recommendation.holidayTill.hour,
-                            minute: recommendation.holidayTill.minute),
-                        editable: false,
-                        decoration: InputDecoration(
-                            labelText: 'Holiday until',
-                            hasFloatingPlaceholder: true),
-                        onChanged: (timeSelected) {
-                          recommendation.holidayTill = TimeOfDay(
-                              hour: timeSelected.hour,
-                              minute: timeSelected.minute);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                Row(children: <Widget>[
+                  getTimePicker(recommendation.holidayFrom),
+                  getTimePicker(recommendation.holidayTill),
+                ]),
 
                 // Save and Delete
                 Padding(
@@ -709,5 +332,25 @@ class RecommendationDetailState extends State<RecommendationDetail> {
       content: Text(message),
     );
     showDialog(context: context, builder: (_) => alertDialog);
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      recommendation.imageOne = image.path;
+    });
+  }
+
+  Widget getImageWidget(path) {
+    if (path != null) {
+      debugPrint(path);
+      return Image(
+        image: FileImage(File(path)),
+        width: 150.0,
+        height: 100.0,
+      );
+    } else {
+      return IconButton(icon: Icon(Icons.image), iconSize: 50);
+    }
   }
 }

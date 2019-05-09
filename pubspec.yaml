@@ -16,6 +16,7 @@ dependencies:
   intl: ^0.15.8
   location: any
   datetime_picker_formfield: any
+  image_picker: any
 
   # scoped_model: ^1.0.0
   cupertino_icons: ^0.1.2
