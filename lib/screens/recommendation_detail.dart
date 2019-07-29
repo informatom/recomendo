@@ -37,27 +37,18 @@ class RecommendationDetailState extends State<RecommendationDetail> {
       onWillPop: () {
         moveToLastScreen();
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(appBarTitle),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                moveToLastScreen();
-              }),
-        ),
-        body: DefaultTabController(
+      child: DefaultTabController(
           length: 3,
           child: Scaffold(
             appBar: AppBar(
               bottom: TabBar(
                 tabs: [
-                  Tab(text: "Main"),
-                  Tab(text: "Images"),
-                  Tab(text: "Opening hours"),
+                  Tab(icon: Icon(Icons.location_on)),
+                  Tab(icon: Icon(Icons.image)),
+                  Tab(icon: Icon(Icons.access_time)),
                 ],
               ),
-              title: Text('Tabs Demo'),
+              title: Text(appBarTitle),
             ),
             body: TabBarView(
               children: [
@@ -89,12 +80,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                         // Title form field
                         TextField(
                             onChanged: (value) => recommendation.title = value,
-                            decoration: InputDecoration(
-                              labelText: 'Title',
-                              border: OutlineInputBorder(),
-                            )),
-
-                        Divider(),
+                            decoration: InputDecoration(labelText: 'Title')),
 
                         // Comment form field
                         TextField(
@@ -122,7 +108,6 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                           decoration: InputDecoration(labelText: 'Phone'),
                           keyboardType: TextInputType.phone,
                         ),
-                        Divider(),
 
                         // Location
                         Center(child: Text("Location", style: textStyle)),
@@ -162,8 +147,6 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                           },
                           secondary: Icon(Icons.notifications),
                         ),
-
-                        Divider(),
 
                         // Save and Delete
                         Padding(
@@ -208,9 +191,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                         EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
                     child: ListView(
                       children: <Widget>[
-
                         // Images: Image 1
-                        Center(child: Text("Images", style: textStyle)),
                         Row(children: <Widget>[
                           Expanded(
                               child: getImageWidget(recommendation.imageOne)),
@@ -246,9 +227,6 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                         EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
                     child: ListView(
                       children: <Widget>[
-                        // Opening hours
-                        Center(child: Text("Opening hours", style: textStyle)),
-
                         // Monday opening hours
                         Row(children: <Widget>[
                           TimePicker(recommendation.moFrom, "Monday From"),
@@ -304,8 +282,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   void moveToLastScreen() {
