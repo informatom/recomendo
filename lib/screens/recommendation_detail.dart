@@ -46,217 +46,264 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 moveToLastScreen();
               }),
         ),
-        body: Padding(
-            padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
-            child: ListView(
-              children: <Widget>[
-                // Category drop down
-                Row(children: <Widget>[
-                  Expanded(child: Text("Category")),
-                  Expanded(
-                      child: DropdownButton(
-                    items: _categories.map((String dropDownStringItem) {
-                      return DropdownMenuItem<String>(
-                        value: dropDownStringItem,
-                        child: Text(dropDownStringItem),
-                      );
-                    }).toList(),
-                    value: getCategoryAsString(recommendation.category),
-                    onChanged: (valueSelectedByUser) {
-                      setState(() {
-                        updateCategoryAsInt(valueSelectedByUser);
-                      });
-                    },
-                  )),
-                ]),
-
-                // Title form field
-                TextField(
-                    onChanged: (value) => recommendation.title = value,
-                    decoration: InputDecoration(
-                      labelText: 'Title',
-                      border: OutlineInputBorder(),
-                    )),
-
-                Divider(),
-
-                // Images: Image 1
-                Center(child: Text("Images", style: textStyle)),
-                Row(children: <Widget>[
-                  Expanded(child: getImageWidget(recommendation.imageOne)),
-                  Expanded(
-                      child: RaisedButton(
-                          onPressed: getImage, child: Text("Pick Photo 1")))
-                ]),
-
-                // Image 2
-                Row(children: <Widget>[
-                  Expanded(child: getImageWidget(recommendation.imageTwo)),
-                  Expanded(
-                      child: RaisedButton(
-                          onPressed: getImage, child: Text("Pick Photo 2")))
-                ]),
-
-                // Image 3
-                Row(children: <Widget>[
-                  Expanded(child: getImageWidget(recommendation.imageThree)),
-                  Expanded(
-                      child: RaisedButton(
-                          onPressed: getImage, child: Text("Pick Photo 3")))
-                ]),
-
-                // Comment form field
-                TextField(
-                    onChanged: (value) => recommendation.comment = value,
-                    decoration: InputDecoration(labelText: 'Comment')),
-
-                // Address form field
-                TextField(
-                    onChanged: (value) => recommendation.address = value,
-                    decoration: InputDecoration(labelText: 'Address')),
-
-                // Website form field
-                TextField(
-                  onChanged: (value) =>
-                      recommendation.website = Uri.parse(value),
-                  decoration: InputDecoration(labelText: 'Website'),
-                  keyboardType: TextInputType.url,
-                ),
-
-                // Phone form field
-                TextField(
-                  onChanged: (value) => recommendation.phone = value,
-                  decoration: InputDecoration(labelText: 'Phone'),
-                  keyboardType: TextInputType.phone,
-                ),
-                Divider(),
-
-                // Location
-                Center(child: Text("Location", style: textStyle)),
+        body: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: AppBar(
+              bottom: TabBar(
+                tabs: [
+                  Tab(text: "Main"),
+                  Tab(text: "Images"),
+                  Tab(text: "Opening hours"),
+                ],
+              ),
+              title: Text('Tabs Demo'),
+            ),
+            body: TabBarView(
+              children: [
                 Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Row(children: <Widget>[
-                      Expanded(
-                          child: Text(
-                              "Longitude: ${recommendation.longitude.toString()}")),
-                      Expanded(
-                          child: Text(
-                              "Latitude: ${recommendation.longitude.toString()}")),
-                    ])),
-
-                // Rating
-                Center(child: Text("Rating", style: textStyle)),
-                Center(
-                  child: StarRating(
-                    value: recommendation.rating,
-                    onChanged: (selectedValue) {
-                      setState(() {
-                        recommendation.rating = selectedValue;
-                      });
-                    },
-                  ),
-                ),
-
-                // Notify me
-                CheckboxListTile(
-                  title: Text('Notify me'),
-                  value: (recommendation.notifyMe == true) ? true : false,
-                  onChanged: (bool value) {
-                    setState(() {
-                      recommendation.notifyMe = value;
-                    });
-                  },
-                  secondary: Icon(Icons.notifications),
-                ),
-
-                Divider(),
-
-                // Opening hours
-                Center(child: Text("Opening hours", style: textStyle)),
-                // Monday opening hours
-                Row(children: <Widget>[
-                  TimePicker(recommendation.moFrom, "Monday From"),
-                  TimePicker(recommendation.moTill, "Monday Until"),
-                ]),
-
-                // Tuesday opening hours
-                Row(children: <Widget>[
-                  TimePicker(recommendation.tueFrom, "Tuesday From"),
-                  TimePicker(recommendation.tueTill, "Tuesday From"),
-                ]),
-
-                // Wednesday opening hours
-                Row(children: <Widget>[
-                  TimePicker(recommendation.wedFrom, "Wednesday From"),
-                  TimePicker(recommendation.wedTill, "Wednesday From"),
-                ]),
-
-                // Thursday opening hours
-                Row(children: <Widget>[
-                  TimePicker(recommendation.thurFrom, "Thursday From"),
-                  TimePicker(recommendation.thurTill, "Thursday From"),
-                ]),
-
-                // Friday opening hours
-                Row(children: <Widget>[
-                  TimePicker(recommendation.friFrom, "Friday From"),
-                  TimePicker(recommendation.friTill, "Friday From"),
-                ]),
-
-                // Saturday opening hours
-                Row(children: <Widget>[
-                  TimePicker(recommendation.satFrom, "Saturday From"),
-                  TimePicker(recommendation.satTill, "Saturday From"),
-                ]),
-
-                // Sunday opening hours
-                Row(children: <Widget>[
-                  TimePicker(recommendation.sunFrom, "Sunday From"),
-                  TimePicker(recommendation.sunTill, "Sunday From"),
-                ]),
-
-                // Holiday opening hours
-                Row(children: <Widget>[
-                  TimePicker(recommendation.holidayFrom, "Holiday From"),
-                  TimePicker(recommendation.holidayTill, "Holiday From"),
-                ]),
-
-                // Save and Delete
-                Padding(
-                    padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                    child: Row(
+                    padding:
+                        EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+                    child: ListView(
                       children: <Widget>[
-                        Expanded(
-                            child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Save',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            setState(() => _save());
-                          },
-                        )),
-                        Container(
-                          width: 5.0,
+                        // Category drop down
+                        Row(children: <Widget>[
+                          Expanded(child: Text("Category")),
+                          Expanded(
+                              child: DropdownButton(
+                            items: _categories.map((String dropDownStringItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropDownStringItem,
+                                child: Text(dropDownStringItem),
+                              );
+                            }).toList(),
+                            value: getCategoryAsString(recommendation.category),
+                            onChanged: (valueSelectedByUser) {
+                              setState(() {
+                                updateCategoryAsInt(valueSelectedByUser);
+                              });
+                            },
+                          )),
+                        ]),
+
+                        // Title form field
+                        TextField(
+                            onChanged: (value) => recommendation.title = value,
+                            decoration: InputDecoration(
+                              labelText: 'Title',
+                              border: OutlineInputBorder(),
+                            )),
+
+                        Divider(),
+
+                        // Comment form field
+                        TextField(
+                            onChanged: (value) =>
+                                recommendation.comment = value,
+                            decoration: InputDecoration(labelText: 'Comment')),
+
+                        // Address form field
+                        TextField(
+                            onChanged: (value) =>
+                                recommendation.address = value,
+                            decoration: InputDecoration(labelText: 'Address')),
+
+                        // Website form field
+                        TextField(
+                          onChanged: (value) =>
+                              recommendation.website = Uri.parse(value),
+                          decoration: InputDecoration(labelText: 'Website'),
+                          keyboardType: TextInputType.url,
                         ),
-                        Expanded(
-                            child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Delete',
-                            textScaleFactor: 1.5,
+
+                        // Phone form field
+                        TextField(
+                          onChanged: (value) => recommendation.phone = value,
+                          decoration: InputDecoration(labelText: 'Phone'),
+                          keyboardType: TextInputType.phone,
+                        ),
+                        Divider(),
+
+                        // Location
+                        Center(child: Text("Location", style: textStyle)),
+                        Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Row(children: <Widget>[
+                              Expanded(
+                                  child: Text(
+                                      "Longitude: ${recommendation.longitude.toString()}")),
+                              Expanded(
+                                  child: Text(
+                                      "Latitude: ${recommendation.longitude.toString()}")),
+                            ])),
+
+                        // Rating
+                        Center(child: Text("Rating", style: textStyle)),
+                        Center(
+                          child: StarRating(
+                            value: recommendation.rating,
+                            onChanged: (selectedValue) {
+                              setState(() {
+                                recommendation.rating = selectedValue;
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            setState(() => _delete());
+                        ),
+
+                        // Notify me
+                        CheckboxListTile(
+                          title: Text('Notify me'),
+                          value:
+                              (recommendation.notifyMe == true) ? true : false,
+                          onChanged: (bool value) {
+                            setState(() {
+                              recommendation.notifyMe = value;
+                            });
                           },
-                        )),
+                          secondary: Icon(Icons.notifications),
+                        ),
+
+                        Divider(),
+
+                        // Save and Delete
+                        Padding(
+                            padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    child: RaisedButton(
+                                  color: Theme.of(context).primaryColorDark,
+                                  textColor:
+                                      Theme.of(context).primaryColorLight,
+                                  child: Text(
+                                    'Save',
+                                    textScaleFactor: 1.5,
+                                  ),
+                                  onPressed: () {
+                                    setState(() => _save());
+                                  },
+                                )),
+                                Container(
+                                  width: 5.0,
+                                ),
+                                Expanded(
+                                    child: RaisedButton(
+                                  color: Theme.of(context).primaryColorDark,
+                                  textColor:
+                                      Theme.of(context).primaryColorLight,
+                                  child: Text(
+                                    'Delete',
+                                    textScaleFactor: 1.5,
+                                  ),
+                                  onPressed: () {
+                                    setState(() => _delete());
+                                  },
+                                )),
+                              ],
+                            )),
+                      ],
+                    )),
+                Padding(
+                    padding:
+                        EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+                    child: ListView(
+                      children: <Widget>[
+
+                        // Images: Image 1
+                        Center(child: Text("Images", style: textStyle)),
+                        Row(children: <Widget>[
+                          Expanded(
+                              child: getImageWidget(recommendation.imageOne)),
+                          Expanded(
+                              child: RaisedButton(
+                                  onPressed: getImage,
+                                  child: Text("Pick Photo 1")))
+                        ]),
+
+                        // Image 2
+                        Row(children: <Widget>[
+                          Expanded(
+                              child: getImageWidget(recommendation.imageTwo)),
+                          Expanded(
+                              child: RaisedButton(
+                                  onPressed: getImage,
+                                  child: Text("Pick Photo 2")))
+                        ]),
+
+                        // Image 3
+                        Row(children: <Widget>[
+                          Expanded(
+                              child: getImageWidget(recommendation.imageThree)),
+                          Expanded(
+                              child: RaisedButton(
+                                  onPressed: getImage,
+                                  child: Text("Pick Photo 3")))
+                        ]),
+                      ],
+                    )),
+                Padding(
+                    padding:
+                        EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+                    child: ListView(
+                      children: <Widget>[
+                        // Opening hours
+                        Center(child: Text("Opening hours", style: textStyle)),
+
+                        // Monday opening hours
+                        Row(children: <Widget>[
+                          TimePicker(recommendation.moFrom, "Monday From"),
+                          TimePicker(recommendation.moTill, "Monday Until"),
+                        ]),
+
+                        // Tuesday opening hours
+                        Row(children: <Widget>[
+                          TimePicker(recommendation.tueFrom, "Tuesday From"),
+                          TimePicker(recommendation.tueTill, "Tuesday From"),
+                        ]),
+
+                        // Wednesday opening hours
+                        Row(children: <Widget>[
+                          TimePicker(recommendation.wedFrom, "Wednesday From"),
+                          TimePicker(recommendation.wedTill, "Wednesday From"),
+                        ]),
+
+                        // Thursday opening hours
+                        Row(children: <Widget>[
+                          TimePicker(recommendation.thurFrom, "Thursday From"),
+                          TimePicker(recommendation.thurTill, "Thursday From"),
+                        ]),
+
+                        // Friday opening hours
+                        Row(children: <Widget>[
+                          TimePicker(recommendation.friFrom, "Friday From"),
+                          TimePicker(recommendation.friTill, "Friday From"),
+                        ]),
+
+                        // Saturday opening hours
+                        Row(children: <Widget>[
+                          TimePicker(recommendation.satFrom, "Saturday From"),
+                          TimePicker(recommendation.satTill, "Saturday From"),
+                        ]),
+
+                        // Sunday opening hours
+                        Row(children: <Widget>[
+                          TimePicker(recommendation.sunFrom, "Sunday From"),
+                          TimePicker(recommendation.sunTill, "Sunday From"),
+                        ]),
+
+                        // Holiday opening hours
+                        Row(children: <Widget>[
+                          TimePicker(
+                              recommendation.holidayFrom, "Holiday From"),
+                          TimePicker(
+                              recommendation.holidayTill, "Holiday From"),
+                        ]),
                       ],
                     )),
               ],
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }
