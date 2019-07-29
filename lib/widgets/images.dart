@@ -3,7 +3,6 @@ import 'package:recomendo/models/recommendation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
-
 import 'package:recomendo/screens/recommendation_detail.dart';
 
 class Images extends StatelessWidget {

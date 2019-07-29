@@ -16,12 +16,10 @@ class MainData extends StatelessWidget {
   final RecommendationDetailState state;
   final DatabaseHelper helper;
   final List<String> categories = ["Restaurant", "Gelateria", "Unknown"];
-  BuildContext context;
 
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.title;
-    this.context = context;
 
     return Padding(
         padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
@@ -123,7 +121,7 @@ class MainData extends StatelessWidget {
                         textScaleFactor: 1.5,
                       ),
                       onPressed: () {
-                        state.setState(() => _save());
+                        state.setState(() => _save(context));
                       },
                     )),
                     Container(
@@ -138,7 +136,7 @@ class MainData extends StatelessWidget {
                         textScaleFactor: 1.5,
                       ),
                       onPressed: () {
-                        state.setState(() => _delete());
+                        state.setState(() => _delete(context));
                       },
                     )),
                   ],
@@ -160,7 +158,7 @@ class MainData extends StatelessWidget {
     }
   }
 
-  void _save() async {
+  void _save(BuildContext context) async {
     state.moveToLastScreen();
     recommendation.updatedAt = DateTime.now();
 
@@ -172,29 +170,29 @@ class MainData extends StatelessWidget {
     }
 
     if (result != 0) {
-      _showAlertDialog('Status', 'Recommendation saved successfully');
+      _showAlertDialog(context, 'Status', 'Recommendation saved successfully');
     } else {
-      _showAlertDialog('Status', 'Error updating recommendation');
+      _showAlertDialog(context, 'Status', 'Error updating recommendation');
     }
   }
 
-  void _delete() async {
+  void _delete(BuildContext context) async {
     state.moveToLastScreen();
 
     if (recommendation.id == null) {
-      _showAlertDialog('Status', 'Creation of new recommendation aborted');
+      _showAlertDialog(context, 'Status', 'Creation of new recommendation aborted');
       return;
     }
 
     int result = await helper.deleteRecommendation(recommendation.id);
     if (result != 0) {
-      _showAlertDialog('Status', 'Recommendation deleted successfully');
+      _showAlertDialog(context, 'Status', 'Recommendation deleted successfully');
     } else {
-      _showAlertDialog('Status', 'Error occured deleting recommendation');
+      _showAlertDialog(context, 'Status', 'Error occured deleting recommendation');
     }
   }
 
-  void _showAlertDialog(String title, String message) {
+  void _showAlertDialog(BuildContext context, String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
       content: Text(message),

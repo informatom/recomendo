@@ -27,7 +27,6 @@ class RecommendationDetailState extends State<RecommendationDetail> {
   @override
   Widget build(BuildContext context) {
 
-
     return WillPopScope(
       onWillPop: () {
         moveToLastScreen();
