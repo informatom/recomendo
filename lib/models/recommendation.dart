@@ -7,9 +7,9 @@ class Recommendation {
   String _title;
   int _category;
   String _comment;
-  String _imageOne;         // todo
-  String _imageTwo;         // todo
-  String _imageThree;       // todo
+  String _imageOne;         // todo image zoom
+  String _imageTwo;         // todo image zoom
+  String _imageThree;       // todo image zoom
   DateTime _insertedAt;
   double _latitude;         // todo move logic
   double _longitude;        // todo move logic

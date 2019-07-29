@@ -175,50 +175,50 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 Center(child: Text("Opening hours", style: textStyle)),
                 // Monday opening hours
                 Row(children: <Widget>[
-                  getTimePicker(recommendation.moFrom),
-                  getTimePicker(recommendation.moTill),
+                  TimePicker(recommendation.moFrom, "Monday From"),
+                  TimePicker(recommendation.moTill, "Monday Until"),
                 ]),
 
                 // Tuesday opening hours
                 Row(children: <Widget>[
-                  getTimePicker(recommendation.tueFrom),
-                  getTimePicker(recommendation.tueTill),
+                  TimePicker(recommendation.tueFrom, "Tuesday From"),
+                  TimePicker(recommendation.tueTill, "Tuesday From"),
                 ]),
 
                 // Wednesday opening hours
                 Row(children: <Widget>[
-                  getTimePicker(recommendation.wedFrom),
-                  getTimePicker(recommendation.wedTill),
+                  TimePicker(recommendation.wedFrom, "Wednesday From"),
+                  TimePicker(recommendation.wedTill, "Wednesday From"),
                 ]),
 
                 // Thursday opening hours
                 Row(children: <Widget>[
-                  getTimePicker(recommendation.thurFrom),
-                  getTimePicker(recommendation.thurTill),
+                  TimePicker(recommendation.thurFrom, "Thursday From"),
+                  TimePicker(recommendation.thurTill, "Thursday From"),
                 ]),
 
                 // Friday opening hours
                 Row(children: <Widget>[
-                  getTimePicker(recommendation.friFrom),
-                  getTimePicker(recommendation.friTill),
+                  TimePicker(recommendation.friFrom, "Friday From"),
+                  TimePicker(recommendation.friTill, "Friday From"),
                 ]),
 
                 // Saturday opening hours
                 Row(children: <Widget>[
-                  getTimePicker(recommendation.satFrom),
-                  getTimePicker(recommendation.satTill),
+                  TimePicker(recommendation.satFrom, "Saturday From"),
+                  TimePicker(recommendation.satTill, "Saturday From"),
                 ]),
 
                 // Sunday opening hours
                 Row(children: <Widget>[
-                  getTimePicker(recommendation.sunFrom),
-                  getTimePicker(recommendation.sunTill),
+                  TimePicker(recommendation.sunFrom, "Sunday From"),
+                  TimePicker(recommendation.sunTill, "Sunday From"),
                 ]),
 
                 // Holiday opening hours
                 Row(children: <Widget>[
-                  getTimePicker(recommendation.holidayFrom),
-                  getTimePicker(recommendation.holidayTill),
+                  TimePicker(recommendation.holidayFrom, "Holiday From"),
+                  TimePicker(recommendation.holidayTill, "Holiday From"),
                 ]),
 
                 // Save and Delete

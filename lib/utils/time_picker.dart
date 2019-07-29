@@ -2,7 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Widget getTimePicker(property) {
+Widget TimePicker(property, labelText) {
   TimeOfDay guardedTime = guarded(property);
 
   return  Expanded(
@@ -20,7 +20,7 @@ Widget getTimePicker(property) {
             minute: guardedTime.minute),
         editable: false,
         decoration: InputDecoration(
-            labelText: 'Monday from',
+            labelText: labelText,
             hasFloatingPlaceholder: true),
         onChanged: (timeSelected) {
           property = TimeOfDay(
