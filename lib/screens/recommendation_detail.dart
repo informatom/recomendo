@@ -4,6 +4,7 @@ import 'package:recomendo/utils/database_helper.dart';
 import 'package:recomendo/widgets/images.dart';
 import 'package:recomendo/widgets/opening_hours.dart';
 import 'package:recomendo/widgets/main_data.dart';
+import 'package:recomendo/widgets/location_and_map.dart';
 
 class RecommendationDetail extends StatefulWidget {
   final String appBarTitle;
@@ -32,14 +33,15 @@ class RecommendationDetailState extends State<RecommendationDetail> {
         moveToLastScreen();
       },
       child: DefaultTabController(
-          length: 3,
+          length: 4,
           child: Scaffold(
             appBar: AppBar(
               bottom: TabBar(
                 tabs: [
-                  Tab(icon: Icon(Icons.location_on)),
-                  Tab(icon: Icon(Icons.image)),
-                  Tab(icon: Icon(Icons.access_time)),
+                  Tab(text: "Info", icon: Icon(Icons.event_note)),
+                  Tab(text: "Location", icon: Icon(Icons.location_on)),
+                  Tab(text: "Photos", icon: Icon(Icons.image)),
+                  Tab(text: "Opening Hours", icon: Icon(Icons.access_time)),
                 ],
               ),
               title: Text(appBarTitle),
@@ -47,6 +49,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
             body: TabBarView(
               children: [
                 MainData(recommendation: recommendation, state: this, helper: helper),
+                LocationAndMap(recommendation: recommendation),
                 Images(recommendation: recommendation, state: this),
                 OpeningHours(recommendation: recommendation),
               ],

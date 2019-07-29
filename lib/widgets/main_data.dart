@@ -7,7 +7,9 @@ import 'package:recomendo/utils/database_helper.dart';
 class MainData extends StatelessWidget {
   MainData({
     Key key,
-    @required this.recommendation, this.state, this.helper,
+    @required this.recommendation,
+    this.state,
+    this.helper,
   }) : super(key: key);
 
   final Recommendation recommendation;
@@ -22,8 +24,7 @@ class MainData extends StatelessWidget {
     this.context = context;
 
     return Padding(
-        padding:
-        EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+        padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
         child: ListView(
           children: <Widget>[
             // Category drop down
@@ -31,19 +32,19 @@ class MainData extends StatelessWidget {
               Expanded(child: Text("Category")),
               Expanded(
                   child: DropdownButton(
-                    items: categories.map((String dropDownStringItem) {
-                      return DropdownMenuItem<String>(
-                        value: dropDownStringItem,
-                        child: Text(dropDownStringItem),
-                      );
-                    }).toList(),
-                    value: getCategoryAsString(recommendation.category),
-                    onChanged: (valueSelectedByUser) {
-                      state.setState(() {
-                        updateCategoryAsInt(valueSelectedByUser);
-                      });
-                    },
-                  )),
+                items: categories.map((String dropDownStringItem) {
+                  return DropdownMenuItem<String>(
+                    value: dropDownStringItem,
+                    child: Text(dropDownStringItem),
+                  );
+                }).toList(),
+                value: getCategoryAsString(recommendation.category),
+                onChanged: (valueSelectedByUser) {
+                  state.setState(() {
+                    updateCategoryAsInt(valueSelectedByUser);
+                  });
+                },
+              )),
             ]),
 
             // Title form field
@@ -53,20 +54,17 @@ class MainData extends StatelessWidget {
 
             // Comment form field
             TextField(
-                onChanged: (value) =>
-                recommendation.comment = value,
+                onChanged: (value) => recommendation.comment = value,
                 decoration: InputDecoration(labelText: 'Comment')),
 
             // Address form field
             TextField(
-                onChanged: (value) =>
-                recommendation.address = value,
+                onChanged: (value) => recommendation.address = value,
                 decoration: InputDecoration(labelText: 'Address')),
 
             // Website form field
             TextField(
-              onChanged: (value) =>
-              recommendation.website = Uri.parse(value),
+              onChanged: (value) => recommendation.website = Uri.parse(value),
               decoration: InputDecoration(labelText: 'Website'),
               keyboardType: TextInputType.url,
             ),
@@ -78,37 +76,31 @@ class MainData extends StatelessWidget {
               keyboardType: TextInputType.phone,
             ),
 
-            // Location
-            Center(child: Text("Location", style: textStyle)),
-            Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Row(children: <Widget>[
-                  Expanded(
-                      child: Text(
-                          "Longitude: ${recommendation.longitude.toString()}")),
-                  Expanded(
-                      child: Text(
-                          "Latitude: ${recommendation.latitude.toString()}")),
-                ])),
-
+            Divider( height: 50),
             // Rating
-            Center(child: Text("Rating", style: textStyle)),
-            Center(
-              child: StarRating(
-                value: recommendation.rating,
-                onChanged: (selectedValue) {
-                  state.setState(() {
-                    recommendation.rating = selectedValue;
-                  });
-                },
-              ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text("Rating"),
+                ),
+                Expanded(
+                  child: StarRating(
+                    value: recommendation.rating,
+                    onChanged: (selectedValue) {
+                      state.setState(() {
+                        recommendation.rating = selectedValue;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
+            Divider(),
 
             // Notify me
             CheckboxListTile(
               title: Text('Notify me'),
-              value:
-              (recommendation.notifyMe == true) ? true : false,
+              value: (recommendation.notifyMe == true) ? true : false,
               onChanged: (bool value) {
                 state.setState(() {
                   recommendation.notifyMe = value;
@@ -124,33 +116,31 @@ class MainData extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                         child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor:
-                          Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Save',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            state.setState(() => _save());
-                          },
-                        )),
+                      color: Theme.of(context).primaryColorDark,
+                      textColor: Theme.of(context).primaryColorLight,
+                      child: Text(
+                        'Save',
+                        textScaleFactor: 1.5,
+                      ),
+                      onPressed: () {
+                        state.setState(() => _save());
+                      },
+                    )),
                     Container(
                       width: 5.0,
                     ),
                     Expanded(
                         child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor:
-                          Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Delete',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            state.setState(() => _delete());
-                          },
-                        )),
+                      color: Theme.of(context).primaryColorDark,
+                      textColor: Theme.of(context).primaryColorLight,
+                      child: Text(
+                        'Delete',
+                        textScaleFactor: 1.5,
+                      ),
+                      onPressed: () {
+                        state.setState(() => _delete());
+                      },
+                    )),
                   ],
                 )),
           ],
