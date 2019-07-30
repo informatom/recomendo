@@ -26,9 +26,13 @@ class RecommendationDetailState extends State<RecommendationDetail> {
   RecommendationDetailState(this.recommendation, this.appBarTitle);
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     setCoordinates(recommendation, this);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
         moveToLastScreen();

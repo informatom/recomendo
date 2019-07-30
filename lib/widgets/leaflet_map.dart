@@ -1,23 +1,47 @@
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/material.dart';
 import 'package:recomendo/models/recommendation.dart';
-
 import 'package:latlong/latlong.dart';
 
-class LeafletMap extends StatelessWidget {
+class LeafletMap extends StatefulWidget {
+  final Recommendation recommendation;
+
   const LeafletMap({
     Key key,
     @required this.recommendation,
   }) : super(key: key);
 
-  final Recommendation recommendation;
+  @override
+  State<LeafletMap> createState() {
+    return LeafletMapState(this.recommendation);
+  }
+}
+
+class LeafletMapState extends State<LeafletMap> {
+  Recommendation recommendation;
+  MapController mapController;
+  LeafletMapState(this.recommendation);
+
+  @override
+  void initState() {
+    super.initState();
+    mapController = MapController();
+  }
 
   @override
   Widget build(BuildContext context ) {
-    FlutterMap map = FlutterMap(
+    LatLng latlng = LatLng(recommendation.latitude ?? 0.0, recommendation.longitude ?? 0.0);
+    double zoom = 17;
+
+    mapController.onReady.then((_) {
+      mapController.move(latlng, zoom);
+    });
+
+    return FlutterMap(
+      mapController: mapController,
       options: MapOptions(
-          zoom: 16,
-          center: LatLng(recommendation.latitude ?? 0.0, recommendation.longitude ?? 0.0)),
+          zoom: zoom,
+          center: latlng),
       layers: [
         TileLayerOptions(
           urlTemplate:
@@ -27,9 +51,9 @@ class LeafletMap extends StatelessWidget {
         MarkerLayerOptions(
           markers: [
             Marker(
-              width: 150.0,
-              height: 150.0,
-              point: LatLng(recommendation.latitude ?? 0.0, recommendation.longitude ?? 0.0),
+              width: 80.0,
+              height: 80.0,
+              point: latlng,
               builder: (ctx) =>
                   Container(
                     child: Icon(Icons.location_on),
@@ -39,7 +63,7 @@ class LeafletMap extends StatelessWidget {
         ),
       ],
     );
-
-    return map;
   }
 }
+
+
