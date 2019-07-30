@@ -170,7 +170,12 @@ class MainData extends StatelessWidget {
     }
 
     if (result != 0) {
-      _showAlertDialog(context, 'Status', 'Recommendation saved successfully');
+      if (recommendation.longitude == null) {
+        _showAlertDialog(context, 'Status', 'Recommendation saved successfully,'
+                                            ' but no coordinates could be derived');
+      } else {
+        _showAlertDialog(context, 'Status', 'Recommendation saved successfully');
+      }
     } else {
       _showAlertDialog(context, 'Status', 'Error updating recommendation');
     }
