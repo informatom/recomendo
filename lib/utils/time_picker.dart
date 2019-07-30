@@ -6,29 +6,29 @@ Widget TimePicker(property, labelText) {
   TimeOfDay guardedTime = guarded(property);
 
   return  Expanded(
-      child: DateTimePickerFormField(
-        inputType: InputType.time,
-        format: DateFormat("HH:mm"),
-        initialValue: DateTime(
-            0,
-            0,
-            0,
+    child: DateTimePickerFormField(
+      inputType: InputType.time,
+      format: DateFormat("HH:mm"),
+      initialValue: DateTime(
+          0,
+          0,
+          0,
           guardedTime.hour,
           guardedTime.minute),
-        initialTime: TimeOfDay(
+      initialTime: TimeOfDay(
+          hour: guardedTime.hour,
+          minute: guardedTime.minute),
+      editable: false,
+      decoration: InputDecoration(
+          labelText: labelText,
+          hasFloatingPlaceholder: true),
+      onChanged: (timeSelected) {
+        property = TimeOfDay(
             hour: guardedTime.hour,
-            minute: guardedTime.minute),
-        editable: false,
-        decoration: InputDecoration(
-            labelText: labelText,
-            hasFloatingPlaceholder: true),
-        onChanged: (timeSelected) {
-          property = TimeOfDay(
-              hour: guardedTime.hour,
-              minute: guardedTime.minute);
-        },
-      ),
-    );
+            minute: guardedTime.minute);
+      },
+    ),
+  );
 }
 
 TimeOfDay guarded(value) {

@@ -15,11 +15,11 @@ dependencies:
   path_provider: any
   intl: ^0.15.8
   location: any
-  datetime_picker_formfield: any
+  datetime_picker_formfield: 0.1.8
   image_picker: any
-
-  # scoped_model: ^1.0.0
+  flutter_map: 0.7.0+1
   cupertino_icons: ^0.1.2
+  # scoped_model: ^1.0.0
 
 dev_dependencies:
   flutter_test:
