@@ -17,7 +17,7 @@ dependencies:
   location: any
   datetime_picker_formfield: 0.1.8
   image_picker: any
-  flutter_map: 0.7.0+1
+  flutter_map: 0.7.0
   cupertino_icons: ^0.1.2
   # scoped_model: ^1.0.0
 

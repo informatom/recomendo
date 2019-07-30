@@ -5,6 +5,8 @@ import 'package:recomendo/widgets/images.dart';
 import 'package:recomendo/widgets/opening_hours.dart';
 import 'package:recomendo/widgets/main_data.dart';
 import 'package:recomendo/widgets/location_and_map.dart';
+import 'package:recomendo/utils/geolocation_helper.dart';
+import 'package:location/location.dart';
 
 class RecommendationDetail extends StatefulWidget {
   final String appBarTitle;
@@ -21,11 +23,11 @@ class RecommendationDetailState extends State<RecommendationDetail> {
   DatabaseHelper helper = DatabaseHelper();
   String appBarTitle;
   Recommendation recommendation;
-
   RecommendationDetailState(this.recommendation, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
+    setCoordinates(recommendation, this);
 
     return WillPopScope(
       onWillPop: () {
@@ -60,5 +62,16 @@ class RecommendationDetailState extends State<RecommendationDetail> {
 
   void moveToLastScreen() {
     Navigator.pop(context, true);
+  }
+
+  bool setCoordinates(recommendation, state) {
+    final Future<LocationData> locationFuture = GeolocationHelper().location;
+
+    locationFuture.then((location) {
+      state.setState(() {
+        recommendation.longitude = location.longitude;
+        recommendation.latitude = location.latitude;
+      });
+    });
   }
 }

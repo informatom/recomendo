@@ -2,11 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:recomendo/models/recommendation.dart';
 import 'package:recomendo/utils/database_helper.dart';
-import 'package:recomendo/utils/geolocation_helper.dart';
 import 'package:recomendo/screens/recommendation_detail.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
-import 'package:location/location.dart';
 
 class RecommendationList extends StatefulWidget {
   @override
@@ -132,8 +130,6 @@ class RecommendationListState extends State<RecommendationList> {
   }
 
   void navigateToDetail(Recommendation recommendation, String title) async {
-    await setCoordinates(recommendation);
-
     bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return RecommendationDetail(recommendation, title);
     }));
@@ -159,11 +155,5 @@ class RecommendationListState extends State<RecommendationList> {
     return Text(dateString);
   }
 
-  bool setCoordinates(recommendation) {
-    final Future<LocationData> locationFuture = GeolocationHelper().location;
-    locationFuture.then((location) {
-      recommendation.longitude = location.longitude;
-      recommendation.latitude = location.latitude;
-    });
-  }
+
 }
