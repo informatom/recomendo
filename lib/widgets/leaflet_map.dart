@@ -56,7 +56,7 @@ class LeafletMapState extends State<LeafletMap> {
               point: latlng,
               builder: (ctx) =>
                   Container(
-                    child: Icon(Icons.location_on),
+                    child: Icon(Icons.location_on, size: 48, color: Colors.deepOrange),
                   ),
             ),
           ],
