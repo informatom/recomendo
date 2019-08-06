@@ -7,25 +7,45 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class AudioComment extends StatelessWidget {
-  const AudioComment({Key key, @required this.recommendation, this.state})
-      : super(key: key);
-
+class AudioComment extends StatefulWidget {
   final Recommendation recommendation;
   final RecommendationDetailState state;
 
+  const AudioComment({Key key, @required this.recommendation, this.state})
+      : super(key: key);
+
+  @override
+  State<AudioComment> createState() {
+    return AudioCommentState(this.recommendation, this.state);
+  }
+}
+
+class AudioCommentState extends State<AudioComment> {
+  Recommendation recommendation;
+  RecommendationDetailState state;
+  bool isRecording = false;
+
+  AudioCommentState(this.recommendation, this.state);
 
   @override
   Widget build(BuildContext context) {
-    AudioPlayer audioPlayer = AudioPlayer();
-    TextStyle textStyle = Theme.of(context).textTheme.title;
+    return ListView(padding: const EdgeInsets.all(50.0), children: <Widget>[
+      Center(child: isRecording ?
+        RaisedButton(
+            onPressed: () => stopRecording(state),
+            child: Text("Stop Recording")
+        ) :
+        RaisedButton(
+            onPressed: recordComment,
+            child: Text("Start Recording"))),
 
-    return ListView(children: <Widget>[
-      Text(recommendation.audioComment ?? "No recording yet."),
-      RaisedButton(onPressed: recordComment, child: Text("Start Recording")),
-      RaisedButton(onPressed: stopRecording, child: Text("Stop Recording")),
-      RaisedButton(onPressed: () => play(path: recommendation.audioComment),
-                   child: Text("Play")),
+      Center(child: recommendation.audioComment != null ?
+        RaisedButton(
+            onPressed: () => play(path: recommendation.audioComment),
+            child: Text("Play")
+        ) :
+        Container()
+      )
     ]);
   }
 
@@ -34,12 +54,7 @@ class AudioComment extends StatelessWidget {
 
     if (_hasPermissions == false) {
       await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-      PermissionStatus storage = await PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.storage);
-      await PermissionHandler()
-          .requestPermissions([PermissionGroup.microphone]);
-      PermissionStatus microphone = await PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.microphone);
+      await PermissionHandler().requestPermissions([PermissionGroup.microphone]);
     };
 
     var uuid = Uuid();
@@ -50,15 +65,15 @@ class AudioComment extends StatelessWidget {
 
     await AudioRecorder.start(
         path: await fullPath.substring(0, endPosition) + "/" + uuid.v1(),
-        audioOutputFormat: AudioOutputFormat.AAC);
+        audioOutputFormat: AudioOutputFormat.AAC
+    );
+    setState(() => isRecording = true);
   }
 
-  Future stopRecording() async {
+  Future stopRecording(state) async {
     Recording recording = await AudioRecorder.stop();
-
-    state.setState(() {
-      recommendation.audioComment = recording.path;
-    });
+    state.setState(() => recommendation.audioComment = recording.path);
+    setState(() => isRecording = false);
   }
 
   Future play({String path}) async{
