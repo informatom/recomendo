@@ -5,6 +5,7 @@ import 'package:recomendo/widgets/images.dart';
 import 'package:recomendo/widgets/opening_hours.dart';
 import 'package:recomendo/widgets/main_data.dart';
 import 'package:recomendo/widgets/location_and_map.dart';
+import 'package:recomendo/widgets/audio_comment.dart';
 import 'package:recomendo/utils/geolocation_helper.dart';
 import 'package:location/location.dart';
 
@@ -38,7 +39,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
         moveToLastScreen();
       },
       child: DefaultTabController(
-          length: 4,
+          length: 5,
           child: Scaffold(
             appBar: AppBar(
               bottom: TabBar(
@@ -47,6 +48,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                   Tab(text: "Location", icon: Icon(Icons.location_on)),
                   Tab(text: "Photos", icon: Icon(Icons.image)),
                   Tab(text: "Opening Hours", icon: Icon(Icons.access_time)),
+                  Tab(text: "Audio Comment", icon: Icon(Icons.mic)),
                 ],
               ),
               title: Text(appBarTitle),
@@ -57,6 +59,7 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                 LocationAndMap(recommendation: recommendation),
                 Images(recommendation: recommendation, state: this),
                 OpeningHours(recommendation: recommendation),
+                AudioComment(recommendation: recommendation, state: this)
               ],
             ),
           ),

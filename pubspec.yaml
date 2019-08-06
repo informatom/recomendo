@@ -19,6 +19,8 @@ dependencies:
   image_picker: any
   flutter_map: 0.7.0
   cupertino_icons: ^0.1.2
+  audio_recorder: 1.0.1
+  permission_handler: ^3.2.1
   # scoped_model: ^1.0.0
 
 dev_dependencies:

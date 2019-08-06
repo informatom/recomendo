@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:recomendo/models/recommendation.dart';
 
 class OpeningHours extends StatelessWidget {
+  final Recommendation recommendation;
+
   const OpeningHours({
     Key key,
     @required this.recommendation,
   }) : super(key: key);
-
-  final Recommendation recommendation;
 
   @override
   Widget build(BuildContext context) {
@@ -26,37 +26,37 @@ class OpeningHours extends StatelessWidget {
             // Tuesday opening hours
             Row(children: <Widget>[
               TimePicker(recommendation.tueFrom, "Tuesday From"),
-              TimePicker(recommendation.tueTill, "Tuesday From"),
+              TimePicker(recommendation.tueTill, "Tuesday Until"),
             ]),
 
             // Wednesday opening hours
             Row(children: <Widget>[
               TimePicker(recommendation.wedFrom, "Wednesday From"),
-              TimePicker(recommendation.wedTill, "Wednesday From"),
+              TimePicker(recommendation.wedTill, "Wednesday Until"),
             ]),
 
             // Thursday opening hours
             Row(children: <Widget>[
               TimePicker(recommendation.thurFrom, "Thursday From"),
-              TimePicker(recommendation.thurTill, "Thursday From"),
+              TimePicker(recommendation.thurTill, "Thursday Until"),
             ]),
 
             // Friday opening hours
             Row(children: <Widget>[
               TimePicker(recommendation.friFrom, "Friday From"),
-              TimePicker(recommendation.friTill, "Friday From"),
+              TimePicker(recommendation.friTill, "Friday Until"),
             ]),
 
             // Saturday opening hours
             Row(children: <Widget>[
               TimePicker(recommendation.satFrom, "Saturday From"),
-              TimePicker(recommendation.satTill, "Saturday From"),
+              TimePicker(recommendation.satTill, "Saturday Until"),
             ]),
 
             // Sunday opening hours
             Row(children: <Widget>[
               TimePicker(recommendation.sunFrom, "Sunday From"),
-              TimePicker(recommendation.sunTill, "Sunday From"),
+              TimePicker(recommendation.sunTill, "Sunday Until"),
             ]),
 
             // Holiday opening hours
@@ -64,7 +64,7 @@ class OpeningHours extends StatelessWidget {
               TimePicker(
                   recommendation.holidayFrom, "Holiday From"),
               TimePicker(
-                  recommendation.holidayTill, "Holiday From"),
+                  recommendation.holidayTill, "Holiday Until"),
             ]),
           ],
         ));

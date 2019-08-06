@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recomendo/models/recommendation.dart';
 import 'leaflet_map.dart';
-import 'package:recomendo/screens/recommendation_detail.dart';
 
 class LocationAndMap extends StatelessWidget {
   const LocationAndMap({

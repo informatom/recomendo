@@ -51,5 +51,7 @@
     <string>Can I use the GPS please?</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Can I use the GPS please?</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Record audio for audio notes</string>
 </dict>
 </plist>
