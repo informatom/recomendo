@@ -6,13 +6,10 @@ import 'dart:io';
 import 'package:recomendo/screens/recommendation_detail.dart';
 
 class Images extends StatelessWidget {
-  const Images({
-    Key key,
-    @required this.recommendation, this.state,
-  }) : super(key: key);
-
   final Recommendation recommendation;
-  final RecommendationDetailState state;
+  final RecommendationDetailState parentWidget;
+
+  const Images({this.recommendation, this.parentWidget}) ;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +18,6 @@ class Images extends StatelessWidget {
         EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
         child: ListView(
           children: <Widget>[
-            // Image 1
             Row(children: <Widget>[
               Expanded(
                   child: getImageWidget(recommendation.imageOne)),
@@ -31,7 +27,6 @@ class Images extends StatelessWidget {
                       child: Text("Pick Photo 1")))
             ]),
 
-            // Image 2
             Row(children: <Widget>[
               Expanded(
                   child: getImageWidget(recommendation.imageTwo)),
@@ -41,7 +36,6 @@ class Images extends StatelessWidget {
                       child: Text("Pick Photo 2")))
             ]),
 
-            // Image 3
             Row(children: <Widget>[
               Expanded(
                   child: getImageWidget(recommendation.imageThree)),
@@ -56,7 +50,7 @@ class Images extends StatelessWidget {
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    state.setState(() {
+    parentWidget.setState(() {
       recommendation.imageOne = image.path;
     });
   }
@@ -70,7 +64,10 @@ class Images extends StatelessWidget {
         height: 100.0,
       );
     } else {
-      return IconButton(icon: Icon(Icons.image), iconSize: 50);
+      return IconButton(
+          icon: Icon(Icons.image),
+          iconSize: 50
+      );
     }
   }
 }

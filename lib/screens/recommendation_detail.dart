@@ -15,20 +15,17 @@ class RecommendationDetail extends StatefulWidget {
   RecommendationDetail(this.recommendation, this.appBarTitle);
 
   @override
-  State<StatefulWidget> createState() {
-    return RecommendationDetailState(this.recommendation, appBarTitle);
-  }
+  State<StatefulWidget> createState() => RecommendationDetailState();
 }
 
 class RecommendationDetailState extends State<RecommendationDetail> {
   DatabaseHelper helper = DatabaseHelper();
-  String appBarTitle;
   Recommendation recommendation;
-  RecommendationDetailState(this.recommendation, this.appBarTitle);
 
   @override
   void initState() {
     super.initState();
+    recommendation = widget.recommendation;
     setCoordinates(recommendation, this);
   }
 
@@ -51,15 +48,15 @@ class RecommendationDetailState extends State<RecommendationDetail> {
                   Tab(text: "Audio Comment", icon: Icon(Icons.mic)),
                 ],
               ),
-              title: Text(appBarTitle),
+              title: Text(widget.appBarTitle),
             ),
             body: TabBarView(
               children: [
-                MainData(recommendation: recommendation, state: this, helper: helper),
+                MainData(recommendation: recommendation, parentWidget: this, helper: helper),
                 LocationAndMap(recommendation: recommendation),
-                Images(recommendation: recommendation, state: this),
+                Images(recommendation: recommendation, parentWidget: this),
                 OpeningHours(recommendation: recommendation),
-                AudioComment(recommendation: recommendation, state: this)
+                AudioComment(recommendation: recommendation, parentWidget: this)
               ],
             ),
           ),

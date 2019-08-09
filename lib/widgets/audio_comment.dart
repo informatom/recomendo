@@ -9,39 +9,32 @@ import 'package:audioplayers/audioplayers.dart';
 
 class AudioComment extends StatefulWidget {
   final Recommendation recommendation;
-  final RecommendationDetailState state;
+  final RecommendationDetailState parentWidget;
 
-  const AudioComment({Key key, @required this.recommendation, this.state})
-      : super(key: key);
+  const AudioComment({this.recommendation, this.parentWidget});
 
   @override
-  State<AudioComment> createState() {
-    return AudioCommentState(this.recommendation, this.state);
-  }
+  State<AudioComment> createState() => AudioCommentState();
 }
 
 class AudioCommentState extends State<AudioComment> {
-  Recommendation recommendation;
-  RecommendationDetailState state;
   bool isRecording = false;
-
-  AudioCommentState(this.recommendation, this.state);
 
   @override
   Widget build(BuildContext context) {
     return ListView(padding: const EdgeInsets.all(50.0), children: <Widget>[
       Center(child: isRecording ?
         RaisedButton(
-            onPressed: () => stopRecording(state),
+            onPressed: stopRecording,
             child: Text("Stop Recording")
         ) :
         RaisedButton(
-            onPressed: recordComment,
+            onPressed: startRecording,
             child: Text("Start Recording"))),
 
-      Center(child: recommendation.audioComment != null ?
+      Center(child: widget.recommendation.audioComment != null ?
         RaisedButton(
-            onPressed: () => play(path: recommendation.audioComment),
+            onPressed: play,
             child: Text("Play")
         ) :
         Container()
@@ -49,19 +42,19 @@ class AudioCommentState extends State<AudioComment> {
     ]);
   }
 
-  Future recordComment() async {
+  Future startRecording() async {
     bool _hasPermissions = await AudioRecorder.hasPermissions;
-
-    if (_hasPermissions == false) {
-      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-      await PermissionHandler().requestPermissions([PermissionGroup.microphone]);
-    };
-
     var uuid = Uuid();
-
     final directory = await getApplicationDocumentsDirectory();
     var fullPath = directory.path;
     var endPosition = fullPath.lastIndexOf('/');
+
+    if (_hasPermissions == false) {
+      await PermissionHandler().requestPermissions([
+        PermissionGroup.storage,
+        PermissionGroup.microphone
+      ]);
+    };
 
     await AudioRecorder.start(
         path: await fullPath.substring(0, endPosition) + "/" + uuid.v1(),
@@ -70,16 +63,16 @@ class AudioCommentState extends State<AudioComment> {
     setState(() => isRecording = true);
   }
 
-  Future stopRecording(state) async {
+  Future stopRecording() async {
     Recording recording = await AudioRecorder.stop();
-    state.setState(() => recommendation.audioComment = recording.path);
+    widget.parentWidget.setState(() => widget.recommendation.audioComment = recording.path);
     setState(() => isRecording = false);
   }
 
-  Future play({String path}) async{
-    if(path != null) {
+  Future play() async{
+    if(widget.recommendation.audioComment != null) {
       AudioPlayer audioPlayer = AudioPlayer();
-      await audioPlayer.play(path, isLocal: true);
+      await audioPlayer.play(widget.recommendation.audioComment, isLocal: true);
     }
   }
 }

@@ -5,21 +5,15 @@ import 'package:recomendo/screens/recommendation_detail.dart';
 import 'package:recomendo/utils/database_helper.dart';
 
 class MainData extends StatelessWidget {
-  MainData({
-    Key key,
-    @required this.recommendation,
-    this.state,
-    this.helper,
-  }) : super(key: key);
-
   final Recommendation recommendation;
-  final RecommendationDetailState state;
+  final RecommendationDetailState parentWidget;
   final DatabaseHelper helper;
   final List<String> categories = ["Restaurant", "Gelateria", "Unknown"];
 
+  MainData({this.recommendation, this.parentWidget, this.helper});
+
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.title;
 
     return Padding(
         padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
@@ -38,7 +32,7 @@ class MainData extends StatelessWidget {
                 }).toList(),
                 value: getCategoryAsString(recommendation.category),
                 onChanged: (valueSelectedByUser) {
-                  state.setState(() {
+                  parentWidget.setState(() {
                     updateCategoryAsInt(valueSelectedByUser);
                   });
                 },
@@ -85,7 +79,7 @@ class MainData extends StatelessWidget {
                   child: StarRating(
                     value: recommendation.rating,
                     onChanged: (selectedValue) {
-                      state.setState(() {
+                      parentWidget.setState(() {
                         recommendation.rating = selectedValue;
                       });
                     },
@@ -100,7 +94,7 @@ class MainData extends StatelessWidget {
               title: Text('Notify me'),
               value: (recommendation.notifyMe == true) ? true : false,
               onChanged: (bool value) {
-                state.setState(() {
+                parentWidget.setState(() {
                   recommendation.notifyMe = value;
                 });
               },
@@ -121,7 +115,7 @@ class MainData extends StatelessWidget {
                         textScaleFactor: 1.5,
                       ),
                       onPressed: () {
-                        state.setState(() => _save(context));
+                        parentWidget.setState(() => _save(context));
                       },
                     )),
                     Container(
@@ -136,7 +130,7 @@ class MainData extends StatelessWidget {
                         textScaleFactor: 1.5,
                       ),
                       onPressed: () {
-                        state.setState(() => _delete(context));
+                        parentWidget.setState(() => _delete(context));
                       },
                     )),
                   ],
@@ -159,7 +153,7 @@ class MainData extends StatelessWidget {
   }
 
   void _save(BuildContext context) async {
-    state.moveToLastScreen();
+    parentWidget.moveToLastScreen();
     recommendation.updatedAt = DateTime.now();
 
     int result;
@@ -182,7 +176,7 @@ class MainData extends StatelessWidget {
   }
 
   void _delete(BuildContext context) async {
-    state.moveToLastScreen();
+    parentWidget.moveToLastScreen();
 
     if (recommendation.id == null) {
       _showAlertDialog(context, 'Status', 'Creation of new recommendation aborted');

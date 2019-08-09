@@ -6,21 +6,14 @@ import 'package:latlong/latlong.dart';
 class LeafletMap extends StatefulWidget {
   final Recommendation recommendation;
 
-  const LeafletMap({
-    Key key,
-    @required this.recommendation,
-  }) : super(key: key);
+  const LeafletMap({this.recommendation}) ;
 
   @override
-  State<LeafletMap> createState() {
-    return LeafletMapState(this.recommendation);
-  }
+  State<LeafletMap> createState() => LeafletMapState();
 }
 
 class LeafletMapState extends State<LeafletMap> {
-  Recommendation recommendation;
   MapController mapController;
-  LeafletMapState(this.recommendation);
 
   @override
   void initState() {
@@ -30,7 +23,10 @@ class LeafletMapState extends State<LeafletMap> {
 
   @override
   Widget build(BuildContext context ) {
-    LatLng latlng = LatLng(recommendation.latitude ?? 0.0, recommendation.longitude ?? 0.0);
+    LatLng latlng = LatLng(
+        widget.recommendation.latitude ?? 0.0,
+        widget.recommendation.longitude ?? 0.0
+    );
     double zoom = 17;
 
     mapController.onReady.then((_) {
@@ -54,7 +50,7 @@ class LeafletMapState extends State<LeafletMap> {
               width: 80.0,
               height: 80.0,
               point: latlng,
-              builder: (ctx) =>
+              builder: (_) =>
                   Container(
                     child: Icon(Icons.location_on, size: 48, color: Colors.deepOrange),
                   ),
